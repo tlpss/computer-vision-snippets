@@ -1,0 +1,14 @@
+name: cv-snippets
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - numpy
+    - matplotlib
+    - opencv-contrib-python==4.9.0.80
+    - jupyter
+    - torch==2.5.1
+    - open3d==0.17.0
