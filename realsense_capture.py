@@ -48,7 +48,7 @@ try:
             if n == 24: # internal corners
                 if  save_time + 1 < time.time():
                     
-                    cv2.imwrite(f"{save_dir}/{saved_images}.png", color_image)
+                    cv2.imwrite(f"{save_dir}/{saved_images}.jpg", color_image)
                     save_time = time.time()
                     print("Chessboard detected and frame saved.")
                     saved_images += 1
