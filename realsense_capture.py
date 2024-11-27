@@ -10,6 +10,7 @@ pipeline = rs.pipeline()
 config = rs.config()
 config.enable_stream(rs.stream.color, 1920, 1080, rs.format.bgr8, 15)
 
+
 # Start streaming
 pipeline.start(config)
 
@@ -37,23 +38,27 @@ try:
 
         dictionary =  cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
 
-        charuco = cv2.aruco.CharucoBoard((7, 5), 0.04, 0.02, dictionary)
-
+        charuco = cv2.aruco.CharucoBoard((11,7), 0.025, 0.011, dictionary)
+        size = charuco.getChessboardSize()
+        n_corners_in_charuco = (size[0]-1)*(size[1]-1)
         # Find the charuco corners
         corners,ids, rej = cv2.aruco.detectMarkers(gray, dictionary)
-        if len(corners)>0:
+        print(corners)
+        if corners and len(corners)>0:
             n, corners, ids = cv2.aruco.interpolateCornersCharuco(corners, ids, gray, charuco)
-
+            print(corners)
             # If found, save the frame
-            if n == 24: # internal corners
+            color = (255,0,0)
+            if corners is not None and n == n_corners_in_charuco: # internal corners
+                color = (0,255,0)
                 if  save_time + 1 < time.time():
                     
-                    cv2.imwrite(f"{save_dir}/{saved_images}.jpg", color_image)
+                    cv2.imwrite(f"{save_dir}/{saved_images}.png", color_image)
                     save_time = time.time()
                     print("Chessboard detected and frame saved.")
                     saved_images += 1
-
-                cv2.aruco.drawDetectedCornersCharuco(color_image, corners, ids, (0,255,0))
+            if corners is not None:
+                cv2.aruco.drawDetectedCornersCharuco(color_image, corners, ids,color)
 
         # Display the resulting frame
         # display number of saved images 
